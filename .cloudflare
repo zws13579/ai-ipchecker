@@ -1,0 +1,4 @@
+# Cloudflare Pages Configuration
+# This file is used by @opennextjs/cloudflare for building
+
+COMPATIBILITY_DATE=2024-09-23
