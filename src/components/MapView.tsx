@@ -406,35 +406,33 @@ export default function MapView({ lat, lng, location }: MapViewProps) {
       {/* 高德地图使用同意对话框 */}
       <AlertDialog open={showConsentDialog} onOpenChange={setShowConsentDialog}>
         <AlertDialogContent className="max-w-md z-[9999]">
-          <AlertDialogHeader>
-            <AlertDialogTitle className="flex items-center gap-2">
-              <AlertTriangle className="h-5 w-5 text-yellow-500" />
-              切换到高德地图
-            </AlertDialogTitle>
-            <AlertDialogDescription className="space-y-3 text-left">
-              <div>您即将切换到 <strong>高德地图</strong>。切换前请注意以下事项：</div>
-              
-              <div className="bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800 rounded-lg p-3 space-y-2">
-                <div className="font-medium text-yellow-800 dark:text-yellow-200 flex items-center gap-2">
-                  <AlertTriangle className="h-4 w-4" />
-                  隐私风险提示
-                </div>
-                <ul className="text-sm space-y-1 text-yellow-700 dark:text-yellow-300 list-disc list-inside">
-                  <li>高德地图会收集您的 IP 地址和地理位置查询请求</li>
-                  <li>这些数据将由高德地图（阿里巴巴集团）存储和处理</li>
-                  <li>切换后，您对本网站的使用可能会被高德地图记录</li>
-                </ul>
-              </div>
-              
-              <div className="text-sm text-muted-foreground">
-                <strong>推荐：</strong> OpenStreetMap 是开源地图，不追踪用户，提供相同的地图服务。
-              </div>
-              
-              <div className="text-sm">
-                是否确认切换到高德地图？
-              </div>
-            </AlertDialogDescription>
-          </AlertDialogHeader>
+          <AlertDialogTitle className="flex items-center gap-2">
+            <AlertTriangle className="h-5 w-5 text-yellow-500" />
+            切换到高德地图
+          </AlertDialogTitle>
+          <div className="space-y-3 text-sm text-muted-foreground">
+            <p>您即将切换到 <strong>高德地图</strong>。切换前请注意以下事项：</p>
+            
+            <div className="bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800 rounded-lg p-3 space-y-2">
+              <p className="font-medium text-yellow-800 dark:text-yellow-200 flex items-center gap-2">
+                <AlertTriangle className="h-4 w-4" />
+                隐私风险提示
+              </p>
+              <ul className="text-sm space-y-1 text-yellow-700 dark:text-yellow-300 list-disc list-inside">
+                <li>高德地图会收集您的 IP 地址和地理位置查询请求</li>
+                <li>这些数据将由高德地图（阿里巴巴集团）存储和处理</li>
+                <li>切换后，您对本网站的使用可能会被高德地图记录</li>
+              </ul>
+            </div>
+            
+            <p className="text-muted-foreground">
+              <strong>推荐：</strong> OpenStreetMap 是开源地图，不追踪用户，提供相同的地图服务。
+            </p>
+            
+            <p className="text-muted-foreground">
+              是否确认切换到高德地图？
+            </p>
+          </div>
           <AlertDialogFooter className="flex-col sm:flex-row gap-2">
             <AlertDialogCancel onClick={handleConsentDenied}>
               取消（保持 OpenStreetMap）

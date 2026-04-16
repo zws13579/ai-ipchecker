@@ -1,2 +1,2 @@
 #!/bin/bash
-pnpm next dev
+pnpm next dev --port 5000

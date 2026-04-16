@@ -20,23 +20,30 @@
 ├── src/
 │   ├── app/
 │   │   ├── api/
-│   │   │   └── ipinfo/
-│   │   │       └── route.ts      # IP查询API (Edge Runtime)
-│   │   ├── page.tsx              # 主页（IP查询界面）
-│   │   ├── layout.tsx            # 布局组件
-│   │   └── globals.css           # 全局样式
+│   │   │   ├── dns-leak/           # DNS泄露检测API
+│   │   │   │   └── route.ts
+│   │   │   ├── ipinfo/              # IP查询API
+│   │   │   │   └── route.ts
+│   │   │   └── myip/               # 双栈IP检测API
+│   │   │       └── route.ts
+│   │   ├── page.tsx                # 主页
+│   │   ├── layout.tsx              # 布局组件
+│   │   └── globals.css             # 全局样式
 │   ├── components/
-│   │   ├── MapView.tsx           # 地图组件
-│   │   └── ui/                   # shadcn/ui组件库
-│   ├── hooks/                    # 自定义Hooks
+│   │   ├── detectors/              # 检测组件
+│   │   │   ├── DNSLeakDetector.tsx
+│   │   │   └── WebRTCLeakDetector.tsx
+│   │   ├── MapView.tsx             # 地图组件
+│   │   └── ui/                     # shadcn/ui组件库
+│   ├── hooks/                      # 自定义Hooks
 │   └── lib/
-│       └── utils.ts              # 工具函数
+│       └── utils.ts                # 工具函数
 ├── .github/
 │   └── workflows/
-│       └── deploy.yml            # GitHub Actions 配置
-├── public/                       # 静态资源
-├── .cloudflare                   # Cloudflare配置
-└── package.json                  # 依赖管理
+│       └── deploy.yml              # GitHub Actions 配置
+├── public/                         # 静态资源
+├── .cloudflare                     # Cloudflare配置
+└── package.json                    # 依赖管理
 ```
 
 ## 功能特性
@@ -228,6 +235,46 @@ npx wrangler pages deploy .open-next
 }
 ```
 
+### GET /api/dns-leak
+
+DNS泄露检测API。
+
+**响应**:
+```json
+{
+  "success": true,
+  "testId": "test-123456-abc",
+  "timestamp": "2024-01-01T00:00:00.000Z",
+  "results": [
+    {
+      "dnsServer": "Cloudflare",
+      "dnsServerIP": "1.1.1.1",
+      "resolvedIP": null,
+      "country": "Australia",
+      "isp": "Cloudflare, Inc",
+      "success": false
+    },
+    {
+      "dnsServer": "阿里DNS",
+      "dnsServerIP": "223.5.5.5",
+      "resolvedIP": "23.239.16.110",
+      "country": "China",
+      "isp": "Hangzhou Alibaba Advertising Co",
+      "success": true
+    }
+  ],
+  "leakInfo": {
+    "isLeaking": true,
+    "leakLevel": "medium",
+    "explanation": "检测到DNS查询经过多个不同的DNS服务器，可能存在DNS泄露。"
+  },
+  "recommendations": [
+    "使用可靠的VPN服务确保DNS查询安全",
+    "启用DNS over HTTPS (DoH)加密DNS流量"
+  ]
+}
+```
+
 ## 第三方API
 
 项目使用以下免费API服务：
@@ -244,9 +291,10 @@ npx wrangler pages deploy .open-next
 ## 注意事项
 
 1. WebRTC泄露检测需要浏览器支持WebRTC
-2. DNS泄露检测为模拟实现，实际生产环境需要服务端支持
+2. DNS泄露检测使用服务端API，通过DoH服务器检测DNS查询路径
 3. 地图组件使用动态导入，避免SSR问题
 4. API路由使用Edge Runtime，可在Cloudflare边缘节点运行
+5. 所有fetch调用使用`cache: 'no-store'`以兼容Edge Runtime
 5. 所有fetch调用使用`cache: 'no-store'`以兼容Edge Runtime
 
 ## 纯净度分数计算规则
