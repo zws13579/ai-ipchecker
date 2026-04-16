@@ -1,5 +1,20 @@
-# Cloudflare Pages Configuration
+// This is a configuration file for Cloudflare Pages deployment 
 
-## Deployment settings
-- Current Date and Time (UTC): 2026-04-16 10:31:21
-- Current User's Login: zws13579
+module.exports = {  
+  build: {   
+    command: "npm run build",  
+    outputs: ["dist/**/*"],  
+  },  
+  functions: {   
+    directory: "./functions"  
+  },  
+  routes: [   
+    {   
+      src: "/(.*)",   
+      dest: "/index.html",   
+      headers: {   
+        "Cache-Control": "no-cache"   
+      }   
+    }   
+  ]  
+};
