@@ -214,12 +214,30 @@ DNS泄露检测的核心原理：
 
 ### Cloudflare Pages
 
+#### 方式一：GitHub Actions 自动部署
+
+1. Fork 此仓库到你的 GitHub
+2. 在 Cloudflare Dashboard 创建新 Pages 项目
+3. 连接到你的 GitHub 仓库
+4. 选择框架预设（Next.js）
+5. 添加以下 GitHub Secrets：
+   - `CLOUDFLARE_API_TOKEN`: 你的 Cloudflare API Token
+   - `CLOUDFLARE_ACCOUNT_ID`: 你的 Cloudflare Account ID
+   - `CLOUDFLARE_PROJECT_NAME`: 项目名称
+
+6. **重要**：在 Cloudflare Dashboard 中设置兼容性标志：
+   - 进入 Pages 项目 → Settings → Compatibility flags
+   - 为 Production 和 Preview 环境都添加 `nodejs_compat` 标志
+
+#### 方式二：手动部署
+
 1. Fork 此仓库到你的 GitHub
 2. 在 Cloudflare Dashboard 创建新 Pages 项目
 3. 连接到你的 GitHub 仓库
 4. 选择框架预设（Next.js）
 5. 构建命令: `pnpm build:cloudflare`
 6. 输出目录: `.open-next`
+7. **重要**：在 Settings → Compatibility flags 中添加 `nodejs_compat`
 
 ### Vercel
 

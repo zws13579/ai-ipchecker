@@ -145,7 +145,10 @@ pnpm ts-check
    - `CLOUDFLARE_API_TOKEN`
    - `CLOUDFLARE_ACCOUNT_ID`
    - `CLOUDFLARE_PROJECT_NAME`
-4. 推送代码到 main 分支，自动部署
+4. **重要**：在 Cloudflare Dashboard 中设置兼容性标志：
+   - 进入 Pages 项目 → Settings → Compatibility flags
+   - 为 Production 和 Preview 环境都添加 `nodejs_compat` 标志
+5. 推送代码到 main 分支，自动部署
 
 ### 2. 手动部署
 
@@ -159,6 +162,8 @@ pnpm build:cloudflare
 # 部署
 npx wrangler pages deploy .open-next
 ```
+
+**注意**：`wrangler.toml` 文件已配置 `compatibility_flags = ["nodejs_compat"]`，但你仍需要在 Cloudflare Dashboard 中为项目启用此兼容性标志。
 
 ## API接口
 

@@ -98,6 +98,7 @@ jobs:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           projectName: ${{ secrets.CLOUDFLARE_PROJECT_NAME }}
+          compatibilityFlags: "nodejs_compat"
           directory: .open-next
           gitHubToken: ${{ secrets.GITHUB_TOKEN }}
           wranglerVersion: '3'
