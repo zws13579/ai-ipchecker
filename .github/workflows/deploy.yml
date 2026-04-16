@@ -66,6 +66,11 @@ jobs:
       - name: Build project
         run: pnpm build:cloudflare
 
+      - name: Prepare Cloudflare Pages output
+        run: |
+          mkdir -p .open-next/assets
+          mv .open-next/worker.js .open-next/assets/_worker.js
+
       - name: Upload build artifacts
         uses: actions/upload-artifact@v4
         with:
@@ -99,7 +104,7 @@ jobs:
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           projectName: ${{ secrets.CLOUDFLARE_PROJECT_NAME }}
           compatibilityFlags: "nodejs_compat"
-          directory: .open-next
+          directory: .open-next/assets
           gitHubToken: ${{ secrets.GITHUB_TOKEN }}
           wranglerVersion: '3'
 
@@ -127,6 +132,11 @@ jobs:
 
       - name: Build project
         run: pnpm build:cloudflare
+
+      - name: Prepare Cloudflare Pages output
+        run: |
+          mkdir -p .open-next/assets
+          mv .open-next/worker.js .open-next/assets/_worker.js
 
       - name: Deploy to Cloudflare Pages
         id: deploy
