@@ -1,1 +1,1 @@
-{\n  \"compilerOptions\": {\n    \"target\": \"ESNext\",\n    \"lib\": [\n      \"DOM\",\n      \"DOM.Iterable\",\n      \"WebWorker\"\n    ],\n    \"module\": \"ESNext\",\n    \"moduleResolution\": \"Node\",\n    \"experimentalDecorators\": true,\n    \"skipLibCheck\": true\n  },\n  \"include\": [\n    \"src\"\n  ],\n  \"exclude\": [\n    \"node_modules\"\n  ]\n}
+{\n  "compilerOptions": {\n    "target": "ES2020",\n    "lib": [\n      "dom",\n      "dom.iterable",\n      "webworker"\n    ],\n    "exclude": [\n      ".open-next",\n      ".next"\n    ]\n  }\n}
