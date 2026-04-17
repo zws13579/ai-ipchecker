@@ -60,16 +60,17 @@ jobs:
           node-version: ${{ env.NODE_VERSION }}
           cache: 'pnpm'
 
+      # 【关键修复 1】: 强制 pnpm 提升依赖，不使用软链接，避免 Cloudflare 报错
       - name: Install dependencies
-        run: pnpm install --frozen-lockfile
+        run: pnpm install --frozen-lockfile --config.node-linker=hoisted
 
       - name: Build project
         run: pnpm build:cloudflare
 
+      # 【关键修复 2】: 原地重命名 worker.js，保证它和 server-functions 依赖在同一层级
       - name: Prepare Cloudflare Pages output
         run: |
-          mkdir -p .open-next/assets
-          mv .open-next/worker.js .open-next/assets/_worker.js
+          mv .open-next/worker.js .open-next/_worker.js
 
       - name: Upload build artifacts
         uses: actions/upload-artifact@v4
@@ -104,7 +105,8 @@ jobs:
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           projectName: ${{ secrets.CLOUDFLARE_PROJECT_NAME }}
           compatibilityFlags: "nodejs_compat"
-          directory: .open-next/assets
+          # 【关键修复 3】: 将整个 .open-next 根目录全部上传，而不是只传 assets
+          directory: .open-next
           gitHubToken: ${{ secrets.GITHUB_TOKEN }}
           wranglerVersion: '3'
 
@@ -128,15 +130,14 @@ jobs:
           cache: 'pnpm'
 
       - name: Install dependencies
-        run: pnpm install --frozen-lockfile
+        run: pnpm install --frozen-lockfile --config.node-linker=hoisted
 
       - name: Build project
         run: pnpm build:cloudflare
 
       - name: Prepare Cloudflare Pages output
         run: |
-          mkdir -p .open-next/assets
-          mv .open-next/worker.js .open-next/assets/_worker.js
+          mv .open-next/worker.js .open-next/_worker.js
 
       - name: Deploy to Cloudflare Pages
         id: deploy
@@ -145,6 +146,7 @@ jobs:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           projectName: ${{ secrets.CLOUDFLARE_PROJECT_NAME }}
-          directory: .open-next/assets
+          compatibilityFlags: "nodejs_compat"
+          directory: .open-next
           gitHubToken: ${{ secrets.GITHUB_TOKEN }}
           wranglerVersion: '3'
